@@ -1,12 +1,12 @@
 part of 'pages.dart';
 
-class ScreenArguments {
+/* class ScreenArguments {
   final String title;
   final Color color1;
   final Color color2;
   final IconData icon;
   ScreenArguments(this.title, this.color1, this.color2, this.icon);
-}
+} */
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,11 +23,27 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              /* CardCategory(title: 'Matematica'),
+            children: sumaryModel.temas
+                .map(
+                  (e) => ButtonCategory(
+                    icon: e.icon,
+                    text: e.name,
+                    onPress: () {
+                      Navigator.pushNamed(
+                        context,
+                        'formulario_page',
+                        arguments: e,
+                      );
+                    },
+                    color1: e.color1,
+                    color2: e.color2,
+                  ),
+                )
+                .toList(),
+            /* CardCategory(title: 'Matematica'),
               CardCategory(title: 'Fisica'),
               CardCategory(title: ' Quimica'), */
-              ButtonCategory(
+            /* ButtonCategory(
                 icon: FontAwesomeIcons.calculator,
                 text: 'Matematica',
                 onPress: () {
@@ -80,8 +96,7 @@ class HomePage extends StatelessWidget {
                 },
                 color1: Colors.red,
                 color2: Colors.redAccent,
-              ),
-            ],
+              ), */
           ),
         ),
       ),
