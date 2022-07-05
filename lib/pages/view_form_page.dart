@@ -17,14 +17,15 @@ class _ViewFormPageState extends State<ViewFormPage> {
   );
   InterstitialAd? _interstitialAd;
   int _numInterstitialLoadAttempts = 0;
+ */
   @override
   void initState() {
     loadPdf();
     super.initState();
   }
- */
+
   final sampleUrl =
-      'https://res.cloudinary.com/negocioexitoso-online/image/upload/v1654634710/exponentes_tys0v9.pdf';
+      'https://res.cloudinary.com/negocioexitoso-online/image/upload/v1657055298/formularios/Cocientes_notables_zkuuga.pdf';
 
   String? pdfFlePath;
 
@@ -41,6 +42,7 @@ class _ViewFormPageState extends State<ViewFormPage> {
 
   void loadPdf() async {
     pdfFlePath = await downloadAndSavePdf();
+    print(pdfFlePath);
     setState(() {});
   }
 
@@ -97,7 +99,7 @@ class _ViewFormPageState extends State<ViewFormPage> {
       appBar: AppBar(
         title: Text('Exponentes'),
       ),
-      backgroundColor: Colors.black,
+      /* backgroundColor: Colors.black, */
       body: Center(
         child: Column(
           children: <Widget>[

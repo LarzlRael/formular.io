@@ -10,7 +10,14 @@ class SubtitlesListPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: args.map((e) {
-            return Text(e.name);
+            return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    'view_form_page',
+                  );
+                },
+                child: Text(e.name + 'xd'));
           }).toList(),
         ),
       ),
