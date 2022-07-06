@@ -1,5 +1,7 @@
 part of 'pages.dart';
 
+const debug = true;
+
 class ViewFormPage extends StatefulWidget {
   const ViewFormPage({Key? key}) : super(key: key);
 
@@ -10,18 +12,78 @@ class ViewFormPage extends StatefulWidget {
 const int maxFailedLoadAttempts = 3;
 
 class _ViewFormPageState extends State<ViewFormPage> {
-  /* static final AdRequest request = AdRequest(
-    keywords: <String>['foo', 'bar'],
-    contentUrl: 'http://foo.com/bar.html',
-    nonPersonalizedAds: true,
-  );
-  InterstitialAd? _interstitialAd;
-  int _numInterstitialLoadAttempts = 0;
- */
+  List<_TaskInfo>? _tasks;
+  late List<_ItemHolder> _items;
+  late bool _isLoading;
+  late bool _permissionReady;
+  late String _localPath;
+  ReceivePort _port = ReceivePort();
+
   @override
   void initState() {
     loadPdf();
+    _bindBackgroundIsolate();
+
+    FlutterDownloader.registerCallback(downloadCallback);
+
+    _isLoading = true;
+    _permissionReady = false;
+
+    _prepare();
     super.initState();
+  }
+
+  void _bindBackgroundIsolate() {
+    bool isSuccess = IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    if (!isSuccess) {
+      _unbindBackgroundIsolate();
+      _bindBackgroundIsolate();
+      return;
+    }
+    _port.listen((dynamic data) {
+      if (debug) {
+        print('UI Isolate Callback: $data');
+      }
+      String? id = data[0];
+      DownloadTaskStatus? status = data[1];
+      int? progress = data[2];
+
+      if (_tasks != null && _tasks!.isNotEmpty) {
+        final task = _tasks!.firstWhere((task) => task.taskId == id);
+        setState(() {
+          task.status = status;
+          task.progress = progress;
+        });
+      }
+    });
+  }
+
+  void _unbindBackgroundIsolate() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+  }
+
+  Future<void> _prepare() async {
+    await FlutterDownloader.loadTasks();
+
+    int count = 0;
+
+    _items = [];
+
+    for (int i = count; i < _tasks!.length; i++) {
+      _items.add(_ItemHolder(name: _tasks![i].name, task: _tasks![i]));
+      count++;
+    }
+
+    _permissionReady = await _checkPermission();
+
+    if (_permissionReady) {
+      await _prepareSaveDir();
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   final sampleUrl =
@@ -32,9 +94,7 @@ class _ViewFormPageState extends State<ViewFormPage> {
   Future<String> downloadAndSavePdf() async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/sample.pdf');
-    /* if (await file.exists()) {
-      return file.path;
-    } */
+
     final response = await http.get(Uri.parse(sampleUrl));
     await file.writeAsBytes(response.bodyBytes);
     return file.path;
@@ -42,56 +102,9 @@ class _ViewFormPageState extends State<ViewFormPage> {
 
   void loadPdf() async {
     pdfFlePath = await downloadAndSavePdf();
-    print(pdfFlePath);
+
     setState(() {});
   }
-
-  /* void _createInterstitialAd() {
-    InterstitialAd.load(
-        adUnitId: Platform.isAndroid
-            ? 'ca-app-pub-3940256099942544/1033173712'
-            : 'ca-app-pub-3940256099942544/4411468910',
-        request: request,
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            print('$ad loaded');
-            _interstitialAd = ad;
-            _numInterstitialLoadAttempts = 0;
-            _interstitialAd!.setImmersiveMode(true);
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error.');
-            _numInterstitialLoadAttempts += 1;
-            _interstitialAd = null;
-            if (_numInterstitialLoadAttempts < maxFailedLoadAttempts) {
-              _createInterstitialAd();
-            }
-          },
-        ));
-  }
-
-  void _showInterstitialAd() {
-    if (_interstitialAd == null) {
-      print('Warning: attempt to show interstitial before loaded.');
-      return;
-    }
-    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          print('ad onAdShowedFullScreenContent.'),
-      onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
-        ad.dispose();
-        _createInterstitialAd();
-      },
-      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
-        ad.dispose();
-        _createInterstitialAd();
-      },
-    );
-    _interstitialAd!.show();
-    _interstitialAd = null;
-  } */
 
   @override
   Widget build(BuildContext context) {
@@ -103,20 +116,6 @@ class _ViewFormPageState extends State<ViewFormPage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            /* ElevatedButton(
-              child: Text("Descargar pdf"),
-              onPressed: () async {
-                final taskId = await FlutterDownloader.enqueue(
-                  url: sampleUrl,
-                  savedDir:
-                      'the path of directory where you want to save downloaded files',
-                  showNotification:
-                      true, // show download progress in status bar (for Android)
-                  openFileFromNotification:
-                      true, // click on notification to open downloaded file (for Android)
-                );
-              },
-            ), */
             if (pdfFlePath != null)
               Expanded(
                 child: PdfView(path: pdfFlePath!),
@@ -130,9 +129,17 @@ class _ViewFormPageState extends State<ViewFormPage> {
       ),
       floatingActionButton: pdfFlePath != null
           ? FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 /* Navigator.pushNamed(context, '/homeworks'); */
                 /* _createInterstitialAd(); */
+                await FlutterDownloader.enqueue(
+                  url: sampleUrl,
+                  headers: {"auth": "test_for_sql_encoding"},
+                  savedDir: _localPath,
+                  showNotification: true,
+                  openFileFromNotification: true,
+                  saveInPublicStorage: true,
+                );
               },
               child: Icon(Icons.download),
               tooltip: 'Descargar',
@@ -140,4 +147,68 @@ class _ViewFormPageState extends State<ViewFormPage> {
           : null,
     );
   }
+
+  Future<bool> _checkPermission() async {
+    if (Platform.isIOS) return true;
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    if (androidInfo.version.sdkInt! <= 28) {
+      final status = await Permission.storage.status;
+      if (status != PermissionStatus.granted) {
+        final result = await Permission.storage.request();
+        if (result == PermissionStatus.granted) {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> _prepareSaveDir() async {
+    _localPath = (await _findLocalPath())!;
+    final savedDir = Directory(_localPath);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create();
+    }
+  }
+
+  Future<String?> _findLocalPath() async {
+    var externalStorageDirPath;
+    if (Platform.isAndroid) {
+      try {
+        externalStorageDirPath = await getDownloadsDirectory();
+      } catch (e) {
+        final directory = await getExternalStorageDirectory();
+        externalStorageDirPath = directory?.path;
+      }
+    } else if (Platform.isIOS) {
+      externalStorageDirPath =
+          (await getApplicationDocumentsDirectory()).absolute.path;
+    }
+    return externalStorageDirPath;
+  }
+}
+
+class _TaskInfo {
+  final String? name;
+  final String? link;
+
+  String? taskId;
+  int? progress = 0;
+  DownloadTaskStatus? status = DownloadTaskStatus.undefined;
+
+  _TaskInfo({this.name, this.link});
+}
+
+class _ItemHolder {
+  final String? name;
+  final _TaskInfo? task;
+
+  _ItemHolder({this.name, this.task});
 }
