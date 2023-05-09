@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:formularios/routes/routes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:formularios/provider/theme_provider.dart';
+import 'package:formularios/routes/app_routes.dart';
+import 'package:formularios/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,19 +15,24 @@ void main() async {
       ignoreSsl:
           true // option: set to false to disable working with http links (default: false)
       );
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, ref) {
+    final AppTheme appTheme = ref.watch(themeNotifierProvider);
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      routes: appRoutes,
-      initialRoute: 'home_page',
+      theme: appTheme.getTheme(),
+      routerConfig: appRouter,
     );
   }
 }

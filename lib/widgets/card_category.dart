@@ -9,7 +9,7 @@ class CardCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'show_form');
+        context.push('/show_form');
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),

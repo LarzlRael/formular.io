@@ -1,12 +1,14 @@
 part of 'pages.dart';
 
 class FormularioPage extends StatelessWidget {
+  final Tema tema;
+
+  const FormularioPage({super.key, required this.tema});
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Tema;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formular.io'),
+        title: const Text('Formular.io'),
       ),
       body: Stack(
         children: [
@@ -16,27 +18,23 @@ class FormularioPage extends StatelessWidget {
               /* _titulos(), */
 
               TitleChooseLesson(
-                text: args.name,
-                color1: args.color1,
-                color2: args.color2,
-                icon: args.icon,
+                text: tema.name,
+                color1: tema.color1,
+                color2: tema.color2,
+                icon: tema.icon,
               ),
               Expanded(
                 child: GridView.count(
                     /* shrinkWrap: true, */
                     /* physics: NeverScrollableScrollPhysics(), */
                     crossAxisCount: 2,
-                    children: args.lessons.map((l) {
+                    children: tema.lessons.map((l) {
                       return CircleButton(
                         color: Colors.blue,
                         icon: Icons.food_bank,
                         text: l.lessonName,
                         onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            'subtitles_list_page',
-                            arguments: l.sublessons,
-                          );
+                          context.push('/subtitles_list_page', extra: l);
                         },
                       );
                     }).toList()),

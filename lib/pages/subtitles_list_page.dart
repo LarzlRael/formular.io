@@ -1,21 +1,19 @@
 part of 'pages.dart';
 
 class SubtitlesListPage extends StatelessWidget {
-  const SubtitlesListPage({Key? key}) : super(key: key);
+  final List<SubLesson> subLesson;
+  const SubtitlesListPage({Key? key, required this.subLesson})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as List<SubLesson>;
     return Scaffold(
       body: SafeArea(
         child: Column(
-          children: args.map((e) {
+          children: subLesson.map((e) {
             return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    'view_form_page',
-                  );
+                  context.push('/view_form_page');
                 },
                 child: Text(e.name + 'xd'));
           }).toList(),

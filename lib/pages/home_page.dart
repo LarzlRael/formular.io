@@ -15,9 +15,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formular.io'),
+        title: const Text('Formular.io'),
       ),
-      body: MainContent(),
+      body: const MainContent(),
     );
   }
 }
@@ -41,11 +41,7 @@ class MainContent extends StatelessWidget {
                   icon: e.icon,
                   text: e.name,
                   onPress: () {
-                    Navigator.pushNamed(
-                      context,
-                      'formulario_page',
-                      arguments: e,
-                    );
+                    context.push('/formulario_page', extra: e);
                   },
                   color1: e.color1,
                   color2: e.color2,
@@ -126,7 +122,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
+  static const List<Widget> _widgetOptions = [
     HomePage(),
     Text(
       'Index 2: School',
@@ -153,7 +149,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             icon: Icon(Icons.home),
             label: 'Formularios',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.school),
             label: 'School',
           ),
@@ -163,7 +159,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        /* selectedItemColor: Colors.amber[800], */
         onTap: _onItemTapped,
       ),
     );
@@ -171,11 +167,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 class Subastareas extends StatelessWidget {
+  const Subastareas({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Layout(
       padding: 30,
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Center(
@@ -183,21 +182,21 @@ class Subastareas extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('assets/icon.png', width: 100, height: 100),
-              const SimpleText(
-                text: 'Descarga la app de subastareas',
-                fontSize: 20,
-                bottom: 20,
-                top: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  'Descarga la app de subastareas',
+                  /*   fontSize: 20,
+                  bottom: 20,
+                  top: 20, */
+                  style: textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
               ),
-              const SimpleText(
-                text:
-                    'Tienes tareas sin resolver? dile a alquien que lo haga por ti',
-                fontSize: 15,
-                color: Colors.white,
+              const Text(
+                'Tienes tareas sin resolver? dile a alquien que lo haga por ti',
                 textAlign: TextAlign.center,
-                fontWeight: FontWeight.w500,
+                /* fontWeight: FontWeight.w500, */
               ),
             ],
           ),
