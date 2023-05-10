@@ -8,40 +8,46 @@ class FormularioPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Formular.io'),
+        title: const Text(appName),
       ),
-      body: Stack(
-        children: [
-          _fondoApp(),
-          Column(
-            children: [
-              /* _titulos(), */
-
-              TitleChooseLesson(
-                text: tema.name,
-                color1: tema.color1,
-                color2: tema.color2,
-                icon: tema.icon,
-              ),
-              Expanded(
-                child: GridView.count(
-                    /* shrinkWrap: true, */
-                    /* physics: NeverScrollableScrollPhysics(), */
-                    crossAxisCount: 2,
-                    children: tema.lessons.map((l) {
-                      return CircleButton(
-                        color: Colors.blue,
-                        icon: Icons.food_bank,
-                        text: l.lessonName,
-                        onPressed: () {
-                          context.push('/subtitles_list_page', extra: l);
-                        },
-                      );
-                    }).toList()),
-              ),
-            ],
-          ),
-        ],
+      body: Layout(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                /* _titulos(), */
+                /* Hero(
+                  tag: tema.name, */
+                TitleChooseLesson(
+                  text: tema.name,
+                  color1: tema.color1,
+                  color2: tema.color2,
+                  icon: tema.icon,
+                ),
+                /* ), */
+                Expanded(
+                  child: GridView.count(
+                      /* shrinkWrap: true, */
+                      /* physics: NeverScrollableScrollPhysics(), */
+                      crossAxisCount: 2,
+                      children: tema.lessons.map((lesson) {
+                        return CircleButton(
+                          color: Colors.blue,
+                          icon: Icons.food_bank,
+                          text: lesson.lessonName,
+                          onPressed: () {
+                            context.push(
+                              '/subtitles_list_page',
+                              extra: lesson.sublessons,
+                            );
+                          },
+                        );
+                      }).toList()),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

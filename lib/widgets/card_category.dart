@@ -12,12 +12,12 @@ class CardCategory extends StatelessWidget {
         context.push('/show_form');
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-        margin: EdgeInsets.all(5),
+        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+        margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
               blurRadius: 10,
@@ -30,8 +30,8 @@ class CardCategory extends StatelessWidget {
           ],
         ),
         child: Row(children: [
-          Icon(Icons.category),
-          SizedBox(width: 15),
+          const Icon(Icons.category),
+          const SizedBox(width: 15),
           SimpleText(
             text: title,
             fontWeight: FontWeight.bold,

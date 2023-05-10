@@ -50,10 +50,10 @@ class ButtonCategory extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const FaIcon(
-                      FontAwesomeIcons.chevronRight,
-                      color: Colors.white,
-                    ),
+                    /*  const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: Colors.white,
+                      ), */
                     const SizedBox(
                       width: 40,
                     ),
@@ -83,22 +83,6 @@ class _ButtonBackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: Stack(
-          children: [
-            Positioned(
-              child: FaIcon(
-                icon,
-                color: Colors.white.withOpacity(0.2),
-                size: 150,
-              ),
-              right: -20,
-              top: -20,
-            ),
-          ],
-        ),
-      ),
       width: double.infinity,
       height: 100,
       margin: const EdgeInsets.all(20),
@@ -116,6 +100,22 @@ class _ButtonBackGround extends StatelessWidget {
           colors: [
             color1,
             color2,
+          ],
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -20,
+              top: -20,
+              child: FaIcon(
+                icon,
+                color: Colors.white.withOpacity(0.2),
+                size: 150,
+              ),
+            ),
           ],
         ),
       ),

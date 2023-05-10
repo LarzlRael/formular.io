@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:formularios/constant/constant.dart';
 import 'package:formularios/provider/theme_provider.dart';
 import 'package:formularios/routes/app_routes.dart';
 import 'package:formularios/theme/app_theme.dart';
@@ -30,7 +31,7 @@ class MyApp extends ConsumerWidget {
     final AppTheme appTheme = ref.watch(themeNotifierProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Material App',
+      title: appName,
       theme: appTheme.getTheme(),
       routerConfig: appRouter,
     );

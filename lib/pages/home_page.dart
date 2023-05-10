@@ -14,10 +14,31 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Formular.io'),
+      /* appBar: AppBar(
+        title: const Text(appName),
+      ), */
+      body: Layout(
+        padding: 20,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: sumaryModel.temas
+                .map(
+                  (e) => ButtonCategory(
+                    icon: e.icon,
+                    text: e.name,
+                    onPress: () {
+                      context.push('/formulario_page', extra: e);
+                    },
+                    color1: e.color1,
+                    color2: e.color2,
+                  ),
+                )
+                .toList(),
+          ),
+        ),
       ),
-      body: const MainContent(),
     );
   }
 }
@@ -37,74 +58,77 @@ class MainContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: sumaryModel.temas
               .map(
-                (e) => ButtonCategory(
-                  icon: e.icon,
-                  text: e.name,
-                  onPress: () {
-                    context.push('/formulario_page', extra: e);
-                  },
-                  color1: e.color1,
-                  color2: e.color2,
+                (e) => Hero(
+                  tag: e.name,
+                  child: ButtonCategory(
+                    icon: e.icon,
+                    text: e.name,
+                    onPress: () {
+                      context.push('/formulario_page', extra: e);
+                    },
+                    color1: e.color1,
+                    color2: e.color2,
+                  ),
                 ),
               )
               .toList(),
           /* CardCategory(title: 'Matematica'),
-            CardCategory(title: 'Fisica'),
-            CardCategory(title: ' Quimica'), */
+              CardCategory(title: 'Fisica'),
+              CardCategory(title: ' Quimica'), */
           /* ButtonCategory(
-              icon: FontAwesomeIcons.calculator,
-              text: 'Matematica',
-              onPress: () {
-                Navigator.pushNamed(
-                  context,
-                  'formulario_page',
-                  arguments: ScreenArguments(
-                    'Matematica',
-                    Color(0xff66A9F2),
-                    Color(0xff536CF6),
-                    FontAwesomeIcons.calculator,
-                  ),
-                );
-              },
-              color1: const Color(0xff66A9F2),
-              color2: const Color(0xff536CF6),
-            ),
-            ButtonCategory(
-              icon: FontAwesomeIcons.atom,
-              text: 'Fisica',
-              onPress: () {
-                Navigator.pushNamed(
-                  context,
-                  'formulario_page',
-                  arguments: ScreenArguments(
-                    'Fisica',
-                    Color(0xff317183),
-                    Color(0xff46997D),
-                    FontAwesomeIcons.atom,
-                  ),
-                );
-              },
-              color1: const Color(0xff317183),
-              color2: const Color(0xff46997D),
-            ),
-            ButtonCategory(
-              icon: FontAwesomeIcons.flask,
-              text: 'Quimica',
-              onPress: () {
-                Navigator.pushNamed(
-                  context,
-                  'formulario_page',
-                  arguments: ScreenArguments(
-                    'Quimica',
-                    Colors.red,
-                    Colors.redAccent,
-                    FontAwesomeIcons.flask,
-                  ),
-                );
-              },
-              color1: Colors.red,
-              color2: Colors.redAccent,
-            ), */
+                icon: FontAwesomeIcons.calculator,
+                text: 'Matematica',
+                onPress: () {
+                  Navigator.pushNamed(
+                    context,
+                    'formulario_page',
+                    arguments: ScreenArguments(
+                      'Matematica',
+                      Color(0xff66A9F2),
+                      Color(0xff536CF6),
+                      FontAwesomeIcons.calculator,
+                    ),
+                  );
+                },
+                color1: const Color(0xff66A9F2),
+                color2: const Color(0xff536CF6),
+              ),
+              ButtonCategory(
+                icon: FontAwesomeIcons.atom,
+                text: 'Fisica',
+                onPress: () {
+                  Navigator.pushNamed(
+                    context,
+                    'formulario_page',
+                    arguments: ScreenArguments(
+                      'Fisica',
+                      Color(0xff317183),
+                      Color(0xff46997D),
+                      FontAwesomeIcons.atom,
+                    ),
+                  );
+                },
+                color1: const Color(0xff317183),
+                color2: const Color(0xff46997D),
+              ),
+              ButtonCategory(
+                icon: FontAwesomeIcons.flask,
+                text: 'Quimica',
+                onPress: () {
+                  Navigator.pushNamed(
+                    context,
+                    'formulario_page',
+                    arguments: ScreenArguments(
+                      'Quimica',
+                      Colors.red,
+                      Colors.redAccent,
+                      FontAwesomeIcons.flask,
+                    ),
+                  );
+                },
+                color1: Colors.red,
+                color2: Colors.redAccent,
+              ), */
         ),
       ),
     );
@@ -120,8 +144,10 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   static const List<Widget> _widgetOptions = [
     HomePage(),
     Text(
@@ -144,7 +170,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
+        items: [
           const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Formularios',
@@ -187,8 +213,8 @@ class Subastareas extends StatelessWidget {
                 child: Text(
                   'Descarga la app de subastareas',
                   /*   fontSize: 20,
-                  bottom: 20,
-                  top: 20, */
+                    bottom: 20,
+                    top: 20, */
                   style: textTheme.titleLarge,
                   textAlign: TextAlign.center,
                 ),
