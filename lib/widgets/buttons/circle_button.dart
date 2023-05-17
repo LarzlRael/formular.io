@@ -16,6 +16,7 @@ class CircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 0.2, sigmaY: 0.2),
       child: GestureDetector(
@@ -42,10 +43,14 @@ class CircleButton extends StatelessWidget {
                 radius: 35.0,
                 child: Icon(icon, color: color, size: 30.0),
               ),
-              SimpleText(
-                text: text,
-                color: Colors.white,
+              Text(
+                text,
+                /* color: Colors.white,
                 fontSize: 16,
+                textAlign: TextAlign.center, */
+                style: textTheme.titleSmall!.copyWith(
+                  color: Colors.white,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 5.0),

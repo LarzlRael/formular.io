@@ -18,6 +18,7 @@ class ButtonCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return InkWell(
       onTap: onPress,
       child: Ink(
@@ -43,11 +44,11 @@ class ButtonCategory extends StatelessWidget {
                       width: 20,
                     ),
                     Expanded(
-                      child: SimpleText(
-                        text: text,
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                      child: Text(
+                        text,
+                        style: textTheme.titleLarge!.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     /*  const FaIcon(

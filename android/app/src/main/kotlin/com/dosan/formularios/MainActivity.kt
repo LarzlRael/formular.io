@@ -1,4 +1,4 @@
-package com.example.formularios
+package com.dosan.formularios
 
 import io.flutter.embedding.android.FlutterActivity
 

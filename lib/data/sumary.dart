@@ -4,10 +4,10 @@ import 'package:formularios/model/sumary_model.dart';
 
 final sumaryModel = SumaryModel(temas: [
   Tema(
-    name: 'Matematicas',
+    name: 'Matemáticas',
     icon: FontAwesomeIcons.calculator,
-    color1: Color(0xff66A9F2),
-    color2: Color(0xff536CF6),
+    color1: const Color(0xff66A9F2),
+    color2: const Color(0xff536CF6),
     lessons: [
       Lesson(lessonName: 'Operaciones algebraicas', sublessons: [
         SubLesson(
@@ -56,9 +56,9 @@ final sumaryModel = SumaryModel(temas: [
     ],
   ),
   Tema(
-    name: 'Fisica',
-    color1: Color(0xff317183),
-    color2: Color(0xff46997D),
+    name: 'Física',
+    color1: const Color(0xff317183),
+    color2: const Color(0xff46997D),
     icon: FontAwesomeIcons.atom,
     lessons: [
       /* Lesson(
@@ -70,7 +70,7 @@ final sumaryModel = SumaryModel(temas: [
     ],
   ),
   Tema(
-    name: 'Quimica',
+    name: 'Química',
     color1: Colors.red,
     color2: Colors.redAccent,
     icon: FontAwesomeIcons.flask,

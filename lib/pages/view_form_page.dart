@@ -3,8 +3,11 @@ part of 'pages.dart';
 const debug = true;
 
 class ViewFormPage extends StatefulWidget {
-  const ViewFormPage({Key? key}) : super(key: key);
-
+  final SubLesson subLesson;
+  const ViewFormPage({
+    Key? key,
+    required this.subLesson,
+  }) : super(key: key);
   @override
   _ViewFormPageState createState() => _ViewFormPageState();
 }
@@ -110,21 +113,22 @@ class _ViewFormPageState extends State<ViewFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Exponentes'),
+        title: Text(widget.subLesson.name),
       ),
       /* backgroundColor: Colors.black, */
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            if (pdfFlePath != null)
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Center(
+          child: Column(
+            children: <Widget>[
               Expanded(
-                child: PdfView(path: pdfFlePath!),
+                child: pdfFlePath != null
+                    ? PdfView(path: pdfFlePath!)
+                    : Center(child: CircularProgressIndicator()),
               )
-            else
-              const Center(
-                child: CircularProgressIndicator(),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: pdfFlePath != null
@@ -141,8 +145,8 @@ class _ViewFormPageState extends State<ViewFormPage> {
                   saveInPublicStorage: true,
                 );
               },
-              child: Icon(Icons.download),
               tooltip: 'Descargar',
+              child: Icon(Icons.download),
             )
           : null,
     );

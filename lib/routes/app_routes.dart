@@ -20,15 +20,20 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/subtitles_list_page',
       builder: (context, state) {
-        List<SubLesson> subLessons = state.extra as List<SubLesson>;
+        Lesson lessons = state.extra as Lesson;
         return SubtitlesListPage(
-          subLesson: subLessons,
+          lesson: lessons,
         );
       },
     ),
     GoRoute(
       path: '/view_form_page',
-      builder: (context, state) => const ViewFormPage(),
+      builder: (context, state) {
+        SubLesson subLesson = state.extra as SubLesson;
+        return ViewFormPage(
+          subLesson: subLesson,
+        );
+      },
     ),
   ],
 );

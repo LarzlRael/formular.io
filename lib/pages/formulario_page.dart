@@ -38,7 +38,7 @@ class FormularioPage extends StatelessWidget {
                           onPressed: () {
                             context.push(
                               '/subtitles_list_page',
-                              extra: lesson.sublessons,
+                              extra: lesson,
                             );
                           },
                         );
