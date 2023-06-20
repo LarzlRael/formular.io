@@ -8,7 +8,7 @@ class FormularioPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(appName),
+        title: Text(tema.name),
       ),
       body: Layout(
         child: Stack(
@@ -18,7 +18,7 @@ class FormularioPage extends StatelessWidget {
                 /* _titulos(), */
                 /* Hero(
                   tag: tema.name, */
-                TitleChooseLesson(
+                BannerChoosenLesson(
                   text: tema.name,
                   color1: tema.color1,
                   color2: tema.color2,

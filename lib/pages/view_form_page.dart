@@ -125,7 +125,7 @@ class _ViewFormPageState extends State<ViewFormPage> {
               Expanded(
                 child: pdfFlePath != null
                     ? PdfView(path: pdfFlePath!)
-                    : Center(child: CircularProgressIndicator()),
+                    : const Center(child: CircularProgressIndicator()),
               )
             ],
           ),

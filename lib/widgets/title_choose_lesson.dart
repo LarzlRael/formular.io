@@ -1,12 +1,12 @@
 part of 'widgets.dart';
 
-class TitleChooseLesson extends StatelessWidget {
+class BannerChoosenLesson extends StatelessWidget {
   final IconData icon;
   final String text;
   final Color color1;
   final Color color2;
 
-  const TitleChooseLesson({
+  const BannerChoosenLesson({
     Key? key,
     required this.text,
     this.icon = Icons.category,

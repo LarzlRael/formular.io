@@ -16,7 +16,7 @@ class SubtitlesListPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(lesson.lessonName),
       ),
-      body: SafeArea(
+      body: Layout(
         child: ListView.builder(
           itemCount: subLesson.length,
           itemBuilder: (_, int index) => ListTile(

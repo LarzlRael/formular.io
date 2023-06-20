@@ -39,15 +39,14 @@ class Lesson {
 }
 
 class SubLesson {
+  String lessionDescription;
+  String urlLocalFile;
+  String urlWebFile;
+  String name;
   SubLesson({
     required this.lessionDescription,
     required this.urlLocalFile,
     required this.urlWebFile,
     required this.name,
   });
-
-  String lessionDescription;
-  String urlLocalFile;
-  String urlWebFile;
-  String name;
 }

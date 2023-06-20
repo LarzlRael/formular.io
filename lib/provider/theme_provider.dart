@@ -1,36 +1,24 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:formularios/theme/app_theme.dart';
+part of './providers.dart';
 
-/* state of is dark */
-final themeProvider = StateProvider<bool>(
-  (ref) => false,
-);
-
-/* List of colors inmutable */
-final colorListProvider = Provider((ref) => colorList);
-
-/* List of colors */
-final selectedColorProvider = StateProvider<int>((ref) => 0);
-
-// Un objeto de tipo AppTheme (custom)
-final themeNotifierProvider = StateNotifierProvider<ThemeNotifer, AppTheme>(
-  (ref) => ThemeNotifer(),
-);
-
-/* Controller o notifier */
-class ThemeNotifer extends StateNotifier<AppTheme> {
+class ThemeProviderNotifier extends ChangeNotifier {
   /* STATE = estado => new AppTheme */
-  ThemeNotifer() : super(AppTheme());
+  AppTheme _appTheme = AppTheme(); // Estado interno
 
-  void toogleDarkMode() {
-    state = state.copyWith(
-      isDarkMode: !state.isDarkMode,
-    );
+  AppTheme get appTheme => _appTheme; // Acceso al estado
+  bool get isDarkModeEnabled => _appTheme
+      .isDarkMode; // Propiedad para verificar si el tema oscuro está habilitado o no
+
+  bool _isLastPageSlider = false;
+  bool get isLastPageSlider => _isLastPageSlider;
+  set isLastPageSlider(bool value) {
+    _isLastPageSlider = value;
+    notifyListeners();
   }
 
-  void changeColorIndex(int colorIndex) {
-    state = state.copyWith(
-      selectedColor: colorIndex,
+  void toggleTheme() {
+    _appTheme = _appTheme.copyWith(
+      isDarkMode: !_appTheme.isDarkMode,
     );
+    notifyListeners(); // Notificar a los oyentes del cambio de estado
   }
 }
