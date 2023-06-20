@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:formularios/constant/constant.dart';
 import 'package:formularios/data/sumary.dart';
 import 'package:formularios/model/sumary_model.dart';
@@ -19,6 +20,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/providers.dart';
 
 part 'home_page.dart';
 part 'formulario_page.dart';

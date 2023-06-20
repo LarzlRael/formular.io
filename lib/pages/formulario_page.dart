@@ -1,52 +1,79 @@
 part of 'pages.dart';
 
 class FormularioPage extends StatelessWidget {
-  final Tema tema;
-
-  const FormularioPage({super.key, required this.tema});
+  const FormularioPage({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
+    final currentLessonProvider = context.read<CurrentLessonProvider>();
+    final tema = currentLessonProvider.getLesson;
+
     return Scaffold(
-      appBar: AppBar(
+      /* appBar: AppBar(
         title: Text(tema.name),
-      ),
+      ), */
       body: Layout(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                /* _titulos(), */
-                /* Hero(
-                  tag: tema.name, */
-                BannerChoosenLesson(
-                  text: tema.name,
-                  color1: tema.color1,
-                  color2: tema.color2,
-                  icon: tema.icon,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /* _titulos(), */
+              /* Hero(
+                tag: tema.name, */
+              IconButton(
+                onPressed: context.pop,
+                icon: const Icon(
+                  Icons.chevron_left_rounded,
+                  size: 35,
                 ),
-                /* ), */
-                Expanded(
-                  child: GridView.count(
-                      /* shrinkWrap: true, */
-                      /* physics: NeverScrollableScrollPhysics(), */
-                      crossAxisCount: 2,
-                      children: tema.lessons.map((lesson) {
-                        return CircleButton(
-                          color: Colors.blue,
-                          icon: Icons.food_bank,
-                          text: lesson.lessonName,
-                          onPressed: () {
-                            context.push(
-                              '/subtitles_list_page',
-                              extra: lesson,
-                            );
-                          },
-                        );
-                      }).toList()),
+              ),
+              BannerChoosenLesson(
+                text: tema.name,
+                color1: tema.color1,
+                color2: tema.color2,
+                icon: tema.icon,
+              ),
+              /* ), */
+              Expanded(
+                /* child: GridView.count(
+                    /* shrinkWrap: true, */
+                    /* physics: NeverScrollableScrollPhysics(), */
+                    crossAxisCount: 2,
+                    children: tema.lessons.map((lesson) {
+                      return CircleButton(
+                        color: Colors.blue,
+                        icon: Icons.food_bank,
+                        text: lesson.lessonName,
+                        onPressed: () {
+                          context.push(
+                            '/subtitles_list_page',
+                            extra: lesson,
+                          );
+                        },
+                      );
+                    }).toList()), */
+                child: AlignedGridView.count(
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 25,
+                  itemCount: currentLessonProvider.getLesson.lessons.length,
+                  itemBuilder: (context, index) => CircleButton(
+                    color: Colors.blue,
+                    icon: Icons.food_bank,
+                    text: tema.lessons[index].lessonName,
+                    onPressed: () {
+                      context.push(
+                        '/subtitles_list_page',
+                        extra: tema.lessons[index],
+                      );
+                    },
+                  ),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentLessonProvider = context.read<CurrentLessonProvider>();
     return Scaffold(
       /* appBar: AppBar(
         title: const Text(appName),
@@ -29,7 +30,10 @@ class HomePage extends StatelessWidget {
                     icon: e.icon,
                     text: e.name,
                     onPress: () {
-                      context.push('/formulario_page', extra: e);
+                      currentLessonProvider.setLesson = e;
+                      context.push(
+                        '/formulario_page',
+                      );
                     },
                     color1: e.color1,
                     color2: e.color2,
@@ -220,7 +224,7 @@ class Subastareas extends StatelessWidget {
                 ),
               ),
               const Text(
-                'Tienes tareas sin resolver? dile a alquien que lo haga por ti',
+                '¿Tienes tareas sin resolver? dile a alguien que lo haga por ti',
                 textAlign: TextAlign.center,
                 /* fontWeight: FontWeight.w500, */
               ),

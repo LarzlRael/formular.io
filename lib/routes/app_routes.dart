@@ -10,12 +10,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/formulario_page',
-      builder: (context, state) {
-        Tema tema = state.extra as Tema;
-        return FormularioPage(
-          tema: tema,
-        );
-      },
+      builder: (context, state) => const FormularioPage(),
     ),
     GoRoute(
       path: '/subtitles_list_page',
