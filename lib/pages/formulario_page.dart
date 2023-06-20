@@ -57,11 +57,11 @@ class FormularioPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                   crossAxisCount: 2,
                   mainAxisSpacing: 15,
-                  crossAxisSpacing: 25,
+                  crossAxisSpacing: 15,
                   itemCount: currentLessonProvider.getLesson.lessons.length,
                   itemBuilder: (context, index) => CircleButton(
-                    color: Colors.blue,
-                    icon: Icons.food_bank,
+                    color: tema.color1,
+                    icon: tema.icon,
                     text: tema.lessons[index].lessonName,
                     onPressed: () {
                       context.push(
